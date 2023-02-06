@@ -65,5 +65,12 @@ while read line; do
       line_plaintext=`echo "$line" | tr '[:lower:]' '[:upper:]' | tr -d '[:punct:]' | tr $CAESAR $ALPHABET`
     fi
   done
-  echo "{ key: $line_key, errors: $line_key_errors, plaintext: \"$line_plaintext\"" }
+  JQ=$(which jq)
+  OUTPUT="{ \"key\": $line_key, \"errors\": $line_key_errors, \"plaintext\": \"$line_plaintext\" }"
+  if [ "" != "$JQ" ]; then
+     echo $OUTPUT | $JQ
+  else
+     echo $OUTPUT
+  fi
+
 done
